@@ -23,6 +23,7 @@ apple = (random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1))
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
+    flash = False
 
     while True:
         handle_events()
@@ -34,8 +35,16 @@ def main():
         elif check_collision():
             break
 
-        draw(screen)
+        draw(screen, flash)
         clock.tick(10)  # 게임 속도 조절 (10 FPS)
+
+        # 몸통 또는 벽에 충돌 시 뱀의 색상을 변경하고 잠시 멈춤
+        if check_collision() or is_wall_collision():
+            flash = True
+            draw(screen, flash)
+            pygame.display.flip()
+            pygame.time.delay(500)
+            flash = False
 
     pygame.quit()
     sys.exit()
@@ -84,17 +93,32 @@ def check_collision():
     return False
 
 
-def draw(screen):
+def is_wall_collision():
+    x, y = snake[0]
+
+    # 벽과의 충돌 여부 확인
+    if x < 0 or x >= GRID_WIDTH or y < 0 or y >= GRID_HEIGHT:
+        return True
+
+    return False
+
+
+def draw(screen, flash=False):
     screen.fill(WHITE)
 
     for segment in snake:
         x, y = segment
-        pygame.draw.rect(screen, GREEN, pygame.Rect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE))
+        if flash:
+            color = RED
+        else:
+            color = GREEN
+        pygame.draw.rect(screen, color, pygame.Rect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
     ax, ay = apple
     pygame.draw.rect(screen, RED, pygame.Rect(ax * GRID_SIZE, ay * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
     pygame.display.flip()
+
 
 
 def handle_events():
