@@ -2,8 +2,6 @@ import pygame
 import random
 
 
-pygame.font.init()
-
 # Set window size
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 700
 PLAY_WIDTH, PLAY_HEIGHT = 300, 600
@@ -38,6 +36,10 @@ SHAPES_COLOR = [
 
 
 def main():
+    pygame.font.init()
+    pygame.display.set_caption("Tetris")
+    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
     locked_positions = {}
     grid = create_grid(locked_positions)
 
@@ -203,9 +205,6 @@ def convert_shape_format(piece):
 
     return positions
 
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-
-pygame.display.set_caption("Tetris")
 
 if __name__ == '__main__':
     main()
