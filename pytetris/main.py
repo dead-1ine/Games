@@ -124,6 +124,7 @@ class Piece(object):
         self.y = row
         self.shape = shape
         self.color = SHAPES_COLOR[SHAPES.index(shape)]
+        self.rotation = 0  # TODO
 
 
 def create_grid(locked_positions={}):
