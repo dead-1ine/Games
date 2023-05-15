@@ -12,17 +12,16 @@ TOP_LEFT_Y = WINDOW_HEIGHT - PLAY_HEIGHT - 50
 # Set blocks
 BLOCK_SIZE = 30
 SHAPES = [
-    [[1, 1, 1, 1]],  # I
+    [[1, 1]],  # I
     [[1, 1], [1, 1]],  # O
     [[0, 1, 1], [1, 1, 0]],  # Z
     [[1, 1, 0], [0, 1, 1]],  # S
     [[1, 1, 1], [0, 1, 0]],  # T
-    [[1, 1, 1, 1, 1], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [1, 1, 1, 1, 1]],  # +
+    [[1, 1, 1], [0, 1, 0], [1, 1, 1]],  # +
     [[1, 1, 0], [1, 1, 1]],  # L
     [[0, 1, 1], [1, 1, 0], [0, 1, 1]],  # X
 ]
 
-# 색상 설정
 SHAPES_COLOR = [
     (0, 255, 255),  # I
     (255, 255, 0),  # O
@@ -37,7 +36,7 @@ SHAPES_COLOR = [
 
 def main():
     pygame.font.init()
-    pygame.display.set_caption("Tetris")
+    pygame.display.set_caption('Tetris')
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
     locked_positions = {}
@@ -53,10 +52,10 @@ def main():
     while run:
         fall_speed = 0.27
         grid = create_grid(locked_positions)
+
         fall_time += clock.get_rawtime()
         clock.tick()
 
-        # 블록 자동 하강
         if fall_time/1000 >= fall_speed:
             fall_time = 0
             current_piece.y += 1
@@ -95,13 +94,11 @@ def main():
 
         shape_pos = convert_shape_format(current_piece)
 
-        # 블록 추가
         for i in range(len(shape_pos)):
             x, y = shape_pos[i]
             if y > -1:
                 grid[y][x] = current_piece.color
 
-        # 라인 제거
         if change_piece:
             for pos in shape_pos:
                 p = (pos[0], pos[1])
@@ -117,7 +114,6 @@ def main():
     pygame.quit()
 
 
-# index 0 - 7 represent shape
 class Piece(object):
     def __init__(self, column, row, shape):
         self.x = column
