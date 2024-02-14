@@ -2,9 +2,9 @@ import sys
 import pygame
 import random
 
+
 pygame.init()
 
-# 게임 설정
 WIDTH = 800
 HEIGHT = 600
 GRID_SIZE = 20
@@ -15,6 +15,7 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
+# TODO: Rename above vars to upper case
 snake = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]
 snake_dir = (0, -1)
 apple = (random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1))
@@ -78,23 +79,16 @@ def move_apple():
 def check_collision():
     global snake
 
-    head = snake[0]
-
+    snake_head = snake[0]
     # 몸통과의 충돌 여부 확인
-    if head in snake[1:]:
+    if snake_head in snake[1:]:
         return True
 
-    x, y = head
-
-    # 벽과의 충돌 여부 확인
-    if x < 0 or x >= GRID_WIDTH or y < 0 or y >= GRID_HEIGHT:
-        return True
-
-    return False
+    return is_wall_collision(snake_head)
 
 
-def is_wall_collision():
-    x, y = snake[0]
+def is_wall_collision(snake_head):
+    x, y = snake_head
 
     # 벽과의 충돌 여부 확인
     if x < 0 or x >= GRID_WIDTH or y < 0 or y >= GRID_HEIGHT:
@@ -120,7 +114,6 @@ def draw(screen, flash=False):
     pygame.display.flip()
 
 
-
 def handle_events():
     global snake_dir
 
@@ -140,5 +133,5 @@ def handle_events():
                 snake_dir = (1, 0)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
